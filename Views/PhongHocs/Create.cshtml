@@ -1,0 +1,105 @@
+﻿@model UniSchedule.Models.PhongHoc
+
+@{
+    ViewBag.Title = "Tạo Mới Phòng Học";
+}
+
+<style>
+    .form-title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #2563eb;
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        font-weight: 500;
+    }
+
+    .btn-create {
+        background: linear-gradient(to right, #10b981, #059669);
+        border: none;
+        padding: 12px;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 10px;
+        transition: 0.3s;
+        color: white;
+    }
+
+        .btn-create:hover {
+            background: linear-gradient(to right, #059669, #047857);
+            transform: translateY(-2px);
+            box-shadow: 0px 4px 10px rgba(16, 185, 129, 0.4);
+        }
+
+    .btn-back {
+        border: 2px solid #9ca3af;
+        font-weight: 600;
+        border-radius: 10px;
+        transition: 0.3s;
+    }
+
+        .btn-back:hover {
+            background-color: #f3f4f6;
+            transform: translateY(-2px);
+        }
+
+    .form-container {
+        background: #ffffff;
+        padding: 2rem 2.5rem;
+        border-radius: 1.5rem;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        margin: auto;
+    }
+
+    body {
+        background-color: #f9fafb;
+    }
+</style>
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="form-container">
+                <h2 class="form-title text-center">📘 Tạo Mới Phòng Học</h2>
+
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    <div class="mb-3">
+                        <label for="MaPhong" class="form-label">Mã Phòng</label>
+                        @Html.TextBoxFor(model => model.MaPhong, new { @class = "form-control", placeholder = "Nhập mã phòng..." })
+                        @Html.ValidationMessageFor(model => model.MaPhong, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="TenPhong" class="form-label">Tên Phòng</label>
+                        @Html.TextBoxFor(model => model.TenPhong, new { @class = "form-control", placeholder = "Nhập tên phòng..." })
+                        @Html.ValidationMessageFor(model => model.TenPhong, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="SoLuongChoNgoi" class="form-label">Số Lượng Chỗ Ngồi</label>
+                        @Html.TextBoxFor(model => model.SoLuongChoNgoi, new { @class = "form-control", placeholder = "Nhập số lượng chỗ ngồi..." })
+                        @Html.ValidationMessageFor(model => model.SoLuongChoNgoi, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="d-grid gap-3">
+                        <button type="submit" class="btn-create">
+                            ✅ Tạo Mới
+                        </button>
+                        @Html.ActionLink("⬅️ Quay Lại Danh Sách", "Index", null, new { @class = "btn btn-back text-center py-2" })
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

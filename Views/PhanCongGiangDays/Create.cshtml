@@ -1,0 +1,117 @@
+﻿@model UniSchedule.Models.PhanCongGiangDay
+
+@{
+    ViewBag.Title = "Tạo phân công giảng dạy";
+}
+
+<!-- Thêm Bootstrap Icons nếu muốn dùng icon -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+<style>
+    .form-container {
+        max-width: 450px;
+        margin: 30px auto;
+        padding: 25px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .btn-custom {
+        margin-right: 10px;
+    }
+</style>
+
+<div class="form-container">
+    <h2>Tạo phân công giảng dạy</h2>
+
+    @using (Html.BeginForm("Create", "PhanCongGiangDays", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <!-- Dropdown chọn khoa -->
+        <div class="form-group">
+            @Html.Label("MaKhoa", "Khoa", new { @class = "control-label" })
+            @Html.DropDownList("MaKhoa", ViewBag.MaKhoa as SelectList, "-- Chọn khoa --", new { @class = "form-control", id = "MaKhoa" })
+        </div>
+
+        <!-- Dropdown giảng viên -->
+        <div class="form-group">
+            @Html.LabelFor(model => model.MaGV, "Giảng viên", htmlAttributes: new { @class = "control-label" })
+            @Html.DropDownListFor(model => model.MaGV, ViewBag.MaGV as SelectList, "-- Chọn giảng viên --", new { @class = "form-control", id = "MaGV" })
+            @Html.ValidationMessageFor(model => model.MaGV, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MaLHP, "Môn học", htmlAttributes: new { @class = "control-label" })
+            @Html.DropDownListFor(model => model.MaLHP, ViewBag.MaLHP as SelectList, "-- Chọn môn học --", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.MaLHP, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.HocKi, "Học kỳ", htmlAttributes: new { @class = "control-label" })
+            @Html.DropDownListFor(model => model.HocKi, ViewBag.HocKiList as IEnumerable<SelectListItem>, "-- Chọn học kỳ --", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.HocKi, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NamHoc, "Năm học", htmlAttributes: new { @class = "control-label" })
+            @Html.DropDownListFor(model => model.NamHoc, ViewBag.NamHocList as IEnumerable<SelectListItem>, "-- Chọn năm học --", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.NamHoc, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GhiChu, "Ghi chú", htmlAttributes: new { @class = "control-label" })
+            @Html.TextAreaFor(model => model.GhiChu, new { @class = "form-control", rows = 4 })
+            @Html.ValidationMessageFor(model => model.GhiChu, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group text-end">
+            <input type="submit" value="Tạo" class="btn btn-primary btn-custom" />
+            @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-secondary btn-custom" })
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            $("#MaKhoa").change(function () {
+                var maKhoa = $(this).val();
+                if (maKhoa) {
+                    $.ajax({
+                        url: '@Url.Action("GetGiangVienByKhoa", "PhanCongGiangDays")',
+                        type: "GET",
+                        data: { maKhoa: maKhoa },
+                        success: function (data) {
+                            $("#MaGV").empty();
+                            $("#MaGV").append('<option value="">-- Chọn giảng viên --</option>');
+                            $.each(data, function (index, item) {
+                                $("#MaGV").append('<option value="' + item.MaGV + '">' + item.TenGV + '</option>');
+                            });
+                        },
+                        error: function () {
+                            alert("Không thể tải danh sách giảng viên.");
+                        }
+                    });
+                } else {
+                    $("#MaGV").empty();
+                    $("#MaGV").append('<option value="">-- Chọn giảng viên --</option>');
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,93 @@
+﻿@model dynamic
+
+@{
+    ViewBag.Title = "Xếp Lịch Giảng Dạy";
+}
+
+<style>
+    .centered-container {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .form-container {
+        max-width: 600px;
+        width: 100%;
+    }
+</style>
+
+<div class="centered-container">
+    <div class="form-container p-4 bg-light rounded shadow-sm">
+        <h2 class="mb-4 text-primary text-center">Xếp Lịch Giảng Dạy</h2>
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @TempData["Error"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
+            </div>
+        }
+
+        @using (Html.BeginForm("XepLich", "LichDays", FormMethod.Post, new { @class = "form-horizontal needs-validation", novalidate = true }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="row mb-3">
+                <label for="hocKi" class="col-md-3 col-form-label fw-bold text-md-end">Học kỳ</label>
+                <div class="col-md-9">
+                    @Html.DropDownList("hocKi", ViewBag.HocKiList as IEnumerable<SelectListItem>, "-- Chọn học kỳ --", new { @class = "form-select", required = true, @aria_describedby = "hocKiHelp" })
+                    <div id="hocKiHelp" class="form-text">Vui lòng chọn học kỳ để xếp lịch.</div>
+                    @Html.ValidationMessage("hocKi", "", new { @class = "text-danger mt-1" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label for="namHoc" class="col-md-3 col-form-label fw-bold text-md-end">Năm học</label>
+                <div class="col-md-9">
+                    @Html.DropDownList("namHoc", ViewBag.NamHocList as IEnumerable<SelectListItem>, "-- Chọn năm học --", new { @class = "form-select", required = true, @aria_describedby = "namHocHelp" })
+                    <div id="namHocHelp" class="form-text">Vui lòng chọn năm học để xếp lịch.</div>
+                    @Html.ValidationMessage("namHoc", "", new { @class = "text-danger mt-1" })
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-9 offset-md-3 text-center">
+                    <button type="submit" class="btn btn-primary me-2" id="submitButton">
+                        <span id="submitText">Xếp lịch</span>
+                        <span id="loadingSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    </button>
+                    @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-outline-secondary" })
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            // Client-side validation for Bootstrap
+            $('form').on('submit', function (e) {
+                var form = $(this)[0];
+                if (!form.checkValidity()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    $(this).addClass('was-validated');
+                } else {
+                    // Show loading spinner on submit
+                    $('#submitButton').prop('disabled', true);
+                    $('#submitText').addClass('d-none');
+                    $('#loadingSpinner').removeClass('d-none');
+                }
+            });
+
+            // Reset validation on input change
+            $('.form-select').on('change', function () {
+                $(this).closest('form').removeClass('was-validated');
+            });
+        });
+    </script>
+}

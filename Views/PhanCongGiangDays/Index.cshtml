@@ -1,0 +1,91 @@
+﻿@model IEnumerable<UniSchedule.Models.PhanCongGiangDay>
+
+@{
+    ViewBag.Title = "Danh sách phân công giảng dạy";
+}
+
+<!-- Thêm liên kết đến Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+<style>
+    .table-container {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .btn-custom {
+        margin-right: 5px;
+    }
+
+    .btn-create {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+        .btn-create:hover {
+            background-color: #0069d9;
+            border-color: #0062cc;
+        }
+
+    h2 {
+        color: #343a40;
+        font-weight: 600;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="table-container">
+    <h2>Danh sách phân công giảng dạy</h2>
+
+    <p class="text-end">
+        <a href="@Url.Action("Create")" class="btn btn-create btn-custom text-white">
+            <i class="bi bi-plus-circle"></i> Thêm phân công mới
+        </a>
+    </p>
+
+    <table class="table table-striped table-hover table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Tên giảng viên</th>
+                <th>Tên môn học</th>
+                <th>Học kỳ</th>
+                <th>Năm học</th>
+                <th>Ghi chú</th>
+                <th>Chức năng</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.GiangVien.TenGV)</td>
+                    <td>@Html.DisplayFor(modelItem => item.LopHocPhan.TenMH)</td>
+                    <td>@Html.DisplayFor(modelItem => item.HocKi)</td>
+                    <td>@Html.DisplayFor(modelItem => item.NamHoc)</td>
+                    <td>@Html.DisplayFor(modelItem => item.GhiChu)</td>
+                    <td>
+                        <a href="@Url.Action("Edit", new { id = item.MaPhanCong })" class="btn btn-warning btn-sm btn-custom">
+                            <i class="bi bi-pencil-square"></i> Sửa
+                        </a>
+                        <a href="@Url.Action("Details", new { id = item.MaPhanCong })" class="btn btn-info btn-sm btn-custom">
+                            <i class="bi bi-info-circle"></i> Chi tiết
+                        </a>
+                        <a href="@Url.Action("Delete", new { id = item.MaPhanCong })" class="btn btn-danger btn-sm btn-custom">
+                            <i class="bi bi-trash"></i> Xóa
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

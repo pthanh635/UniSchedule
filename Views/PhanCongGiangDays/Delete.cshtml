@@ -1,0 +1,137 @@
+﻿@model UniSchedule.Models.PhanCongGiangDay
+
+@{
+    ViewBag.Title = "Xóa phân công giảng dạy";
+}
+
+<!-- Link to Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+<style>
+    .form-container {
+        max-width: 450px;
+        margin: 30px auto;
+        padding: 25px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    h3 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #dc3545;
+        font-size: 1.2rem;
+    }
+
+    h4 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: bold;
+        color: #333;
+        font-size: 1.2rem;
+    }
+
+    .details-group {
+        margin-bottom: 20px;
+    }
+
+    .details-label {
+        font-weight: bold;
+        color: #333;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .details-value {
+        color: #555;
+        margin-bottom: 15px;
+        padding-left: 10px;
+    }
+
+    .btn-custom {
+        margin-right: 10px;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        color: #fff;
+    }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+    .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+        color: #fff;
+    }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+
+    .text-danger {
+        font-size: 0.875rem;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    hr {
+        margin: 20px 0;
+        border-color: #dee2e6;
+    }
+</style>
+
+<div class="form-container">
+    <h2>Xóa phân công giảng dạy</h2>
+    <h3>Bạn có chắc chắn muốn xóa phân công này?</h3>
+    <h4>Phân công giảng dạy</h4>
+    <hr />
+
+    <div class="details-group">
+        <div class="details-label">Tên Lớp học phần</div>
+        <div class="details-value">@Html.DisplayFor(model => model.LopHocPhan.TenMH)</div>
+
+        <div class="details-label">Tên giảng viên</div>
+        <div class="details-value">@Html.DisplayFor(model => model.GiangVien.TenGV)</div>
+
+        <div class="details-label">Học kỳ</div>
+        <div class="details-value">@Html.DisplayFor(model => model.HocKi)</div>
+
+        <div class="details-label">Năm học</div>
+        <div class="details-value">@Html.DisplayFor(model => model.NamHoc)</div>
+
+        <div class="details-label">Ghi chú</div>
+        <div class="details-value">@Html.DisplayFor(model => model.GhiChu)</div>
+    </div>
+
+    @using (Html.BeginForm("Delete", "PhanCongGiangDays", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.MaPhanCong)
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-danger btn-custom">
+                <i class="bi bi-trash"></i> Xóa
+            </button>
+            @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-secondary btn-custom" })
+        </div>
+    }
+</div>

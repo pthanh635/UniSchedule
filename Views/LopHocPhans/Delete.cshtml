@@ -1,0 +1,77 @@
+﻿@model UniSchedule.Models.LopHocPhan
+
+@{
+    ViewBag.Title = "Xóa Lớp Học Phần";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+<style>
+    body {
+        background-color: #f0f2f5;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .card-custom {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        max-width: 550px;
+        margin: auto;
+    }
+
+    .card-header {
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+    }
+
+    .btn-danger {
+        border-radius: 10px;
+    }
+
+    .btn-secondary {
+        border-radius: 10px;
+    }
+
+    dt {
+        font-weight: 500;
+    }
+</style>
+
+<div class="d-flex align-items-center justify-content-center min-vh-100">
+    <div class="card card-custom w-100">
+        <div class="card-header bg-danger text-white px-4 py-3 text-center">
+            <h4 class="mb-0"><i class="bi bi-exclamation-triangle-fill me-2"></i>Xóa Lớp Học Phần</h4>
+        </div>
+        <div class="card-body px-4 py-4 bg-white">
+            <h5 class="text-center text-danger mb-4">Bạn có chắc chắn muốn xóa lớp học phần này không?</h5>
+
+            <dl class="row mb-4 border-top pt-3">
+                <dt class="col-sm-5 text-muted">Tên môn học:</dt>
+                <dd class="col-sm-7">@Html.DisplayFor(model => model.TenMH)</dd>
+
+                <dt class="col-sm-5 text-muted">Số tín chỉ:</dt>
+                <dd class="col-sm-7">@Html.DisplayFor(model => model.SoTinChi)</dd>
+
+                <dt class="col-sm-5 text-muted">Số tiết mỗi tuần:</dt>
+                <dd class="col-sm-7">@Html.DisplayFor(model => model.SoTietMoiTuan)</dd>
+
+                <dt class="col-sm-5 text-muted">Số lượng sinh viên:</dt>
+                <dd class="col-sm-7">@Html.DisplayFor(model => model.SoLuongSinhVien)</dd>
+            </dl>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash3-fill me-1"></i> Xóa
+                    </button>
+                    @Html.ActionLink("Hủy bỏ", "Index", null, new { @class = "btn btn-outline-secondary" })
+                </div>
+            }
+        </div>
+    </div>
+</div>

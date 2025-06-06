@@ -1,0 +1,58 @@
+﻿@model UniSchedule.Models.TaiKhoan
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+        <div class="card-header bg-warning text-white text-center">
+            <h2 class="mb-0">Chỉnh Sửa Tài Khoản</h2>
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                @Html.HiddenFor(model => model.TenDangNhap)
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.MatKhau, htmlAttributes: new { @class = "form-label" })
+                    </div>
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.MatKhau, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MatKhau, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.MaGV, "Giảng Viên", htmlAttributes: new { @class = "form-label" })
+                    </div>
+                    <div class="col-md-8">
+                        @Html.DropDownList("MaGV", null, htmlAttributes: new { @class = "form-select" })
+                        @Html.ValidationMessageFor(model => model.MaGV, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.MaVaiTro, "Vai Trò", htmlAttributes: new { @class = "form-label" })
+                    </div>
+                    <div class="col-md-8">
+                        @Html.DropDownList("MaVaiTro", null, htmlAttributes: new { @class = "form-select" })
+                        @Html.ValidationMessageFor(model => model.MaVaiTro, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <button type="submit" class="btn btn-success me-2">Lưu</button>
+                        @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-secondary" })
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

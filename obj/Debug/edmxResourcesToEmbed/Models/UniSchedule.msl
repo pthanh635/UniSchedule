@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="XepLichGiangVienModelStoreContainer" CdmEntityContainer="XepLichGiangVienEntities">
+    <EntitySetMapping Name="GiangViens">
+      <EntityTypeMapping TypeName="XepLichGiangVienModel.GiangVien">
+        <MappingFragment StoreEntitySet="GiangVien">
+          <ScalarProperty Name="MaGV" ColumnName="MaGV" />
+          <ScalarProperty Name="TenGV" ColumnName="TenGV" />
+          <ScalarProperty Name="MaKhoa" ColumnName="MaKhoa" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="SoDienThoai" ColumnName="SoDienThoai" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Khoas">
+      <EntityTypeMapping TypeName="XepLichGiangVienModel.Khoa">
+        <MappingFragment StoreEntitySet="Khoa">
+          <ScalarProperty Name="MaKhoa" ColumnName="MaKhoa" />
+          <ScalarProperty Name="TenKhoa" ColumnName="TenKhoa" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LichDays">
+      <EntityTypeMapping TypeName="XepLichGiangVienModel.LichDay">
+        <MappingFragment StoreEntitySet="LichDay">
+          <ScalarProperty Name="MaLich" ColumnName="MaLich" />
+          <ScalarProperty Name="Thu" ColumnName="Thu" />
+          <ScalarProperty Name="TietBatDau" ColumnName="TietBatDau" />
+          <ScalarProperty Name="TietKetThuc" ColumnName="TietKetThuc" />
+          <ScalarProperty Name="TuanBatDau" ColumnName="TuanBatDau" />
+          <ScalarProperty Name="TuanKetThuc" ColumnName="TuanKetThuc" />
+          <ScalarProperty Name="MaPhong" ColumnName="MaPhong" />
+          <ScalarProperty Name="MaPhanCong" ColumnName="MaPhanCong" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LopHocPhans">
+      <EntityTypeMapping TypeName="XepLichGiangVienModel.LopHocPhan">
+        <MappingFragment StoreEntitySet="LopHocPhan">
+          <ScalarProperty Name="MaLHP" ColumnName="MaLHP" />
+          <ScalarProperty Name="TenMH" ColumnName="TenMH" />
+          <ScalarProperty Name="SoTinChi" ColumnName="SoTinChi" />
+          <ScalarProperty Name="SoTietMoiTuan" ColumnName="SoTietMoiTuan" />
+          <ScalarProperty Name="SoLuongSinhVien" ColumnName="SoLuongSinhVien" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PhanCongGiangDays">
+      <EntityTypeMapping TypeName="XepLichGiangVienModel.PhanCongGiangDay">
+        <MappingFragment StoreEntitySet="PhanCongGiangDay">
+          <ScalarProperty Name="NamHoc" ColumnName="NamHoc" />
+          <ScalarProperty Name="HocKi" ColumnName="HocKi" />
+          <ScalarProperty Name="MaPhanCong" ColumnName="MaPhanCong" />
+          <ScalarProperty Name="MaGV" ColumnName="MaGV" />
+          <ScalarProperty Name="MaLHP" ColumnName="MaLHP" />
+          <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PhongHocs">
+      <EntityTypeMapping TypeName="XepLichGiangVienModel.PhongHoc">
+        <MappingFragment StoreEntitySet="PhongHoc">
+          <ScalarProperty Name="MaPhong" ColumnName="MaPhong" />
+          <ScalarProperty Name="TenPhong" ColumnName="TenPhong" />
+          <ScalarProperty Name="SoLuongChoNgoi" ColumnName="SoLuongChoNgoi" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="XepLichGiangVienModel.sysdiagram">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TaiKhoans">
+      <EntityTypeMapping TypeName="XepLichGiangVienModel.TaiKhoan">
+        <MappingFragment StoreEntitySet="TaiKhoan">
+          <ScalarProperty Name="TenDangNhap" ColumnName="TenDangNhap" />
+          <ScalarProperty Name="MatKhau" ColumnName="MatKhau" />
+          <ScalarProperty Name="MaGV" ColumnName="MaGV" />
+          <ScalarProperty Name="MaVaiTro" ColumnName="MaVaiTro" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VaiTroes">
+      <EntityTypeMapping TypeName="XepLichGiangVienModel.VaiTro">
+        <MappingFragment StoreEntitySet="VaiTro">
+          <ScalarProperty Name="MaVaiTro" ColumnName="MaVaiTro" />
+          <ScalarProperty Name="TenVaiTro" ColumnName="TenVaiTro" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

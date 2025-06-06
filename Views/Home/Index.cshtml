@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = "Trang chủ";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // hoặc để trống nếu bạn không dùng layout
+}
+
+<style>
+    body {
+        background: url('https://baodanang.vn/dataimages/202111/original/images1630532_3__H_N_.jpg') no-repeat center center fixed;
+        background-size: cover;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .homepage-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 80vh;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.7); /* Để nền mờ đi, dễ đọc chữ */
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .homepage-title {
+        font-size: 3rem;
+        margin-bottom: 0.5rem;
+        color: #333;
+    }
+
+    .homepage-subtitle {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        color: #666;
+    }
+
+    .login-button {
+        padding: 0.75rem 2rem;
+        font-size: 1.2rem;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+
+        .login-button:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+</style>
+
+<div class="homepage-container">
+    <img src="https://inkythuatso.com/uploads/thumbnails/800/2021/12/logo-dai-hoc-bach-khoa-da-nang-inkythuatso-01-21-09-26-41.jpg" alt="Logo" style="width: 150px; height: auto; margin-bottom: 20px;" />
+    <div class="homepage-title">Ứng Dụng Xếp Lịch Tự Động</div>
+    <div class="homepage-subtitle">Trường Đại Học Bách Khoa - Đại Học Đà Nẵng</div>
+
+    @if (Session["TenDangNhap"] != null)
+    {
+        @Html.ActionLink(
+            "Đăng xuất",
+            "Logout",
+            "Home",
+            routeValues: null,
+            htmlAttributes: new { @class = "login-button" }
+        )
+    }
+    else
+    {
+        @Html.ActionLink(
+            "Đăng nhập",
+            "Login",
+            "Home",
+            routeValues: null,
+            htmlAttributes: new { @class = "login-button" }
+        )
+    }
+</div>

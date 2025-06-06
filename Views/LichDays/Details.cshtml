@@ -1,0 +1,43 @@
+﻿@model UniSchedule.Models.LichDay
+
+@{
+    ViewBag.Title = "Chi tiết lịch dạy";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center text-primary mb-4">CHI TIẾT LỊCH GIẢNG DẠY</h2>
+
+    <div class="card shadow">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-4">Lớp học phần</dt>
+                <dd class="col-sm-8">@Model.PhanCongGiangDay.LopHocPhan.TenMH</dd>
+
+                <dt class="col-sm-4">Số tín chỉ</dt>
+                <dd class="col-sm-8">@Model.PhanCongGiangDay.LopHocPhan.SoTinChi</dd>
+
+                <dt class="col-sm-4">Tuần học</dt>
+                <dd class="col-sm-8">Tuần @Model.TuanBatDau - @Model.TuanKetThuc</dd>
+
+                <dt class="col-sm-4">Thứ</dt>
+                <dd class="col-sm-8">@Model.Thu</dd>
+
+                <dt class="col-sm-4">Tiết học</dt>
+                <dd class="col-sm-8">Tiết @Model.TietBatDau - @Model.TietKetThuc</dd>
+
+                <dt class="col-sm-4">Phòng học</dt>
+                <dd class="col-sm-8">@Model.PhongHoc.TenPhong</dd>
+
+                <dt class="col-sm-4">Giảng viên</dt>
+                <dd class="col-sm-8">@Model.PhanCongGiangDay.GiangVien.TenGV</dd>
+
+                <dt class="col-sm-4">Khoa</dt>
+                <dd class="col-sm-8">@Model.PhanCongGiangDay.GiangVien.Khoa.TenKhoa</dd>
+            </dl>
+        </div>
+        <div class="card-footer text-end">
+            @Html.ActionLink("Sửa", "Edit", new { id = Model.MaLich }, new { @class = "btn btn-warning me-2" })
+            @Html.ActionLink("Quay lại", "Index", null, new { @class = "btn btn-secondary" })
+        </div>
+    </div>
+</div>

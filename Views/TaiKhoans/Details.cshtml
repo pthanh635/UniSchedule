@@ -1,0 +1,48 @@
+﻿@model UniSchedule.Models.TaiKhoan
+
+@{
+    ViewBag.Title = "Chi tiết tài khoản";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm mx-auto" style="max-width: 600px;">
+        <div class="card-header bg-primary text-white text-center">
+            <h2 class="mb-0">Chi tiết tài khoản</h2>
+        </div>
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-4">
+                    @Html.DisplayName("Tên đăng nhập")
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.TenDangNhap)
+                </dd>
+
+                <dt class="col-sm-4">
+                    @Html.DisplayName("Mật khẩu")
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.MatKhau)
+                </dd>
+
+                <dt class="col-sm-4">
+                    @Html.DisplayName("Giảng viên")
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.GiangVien.TenGV)
+                </dd>
+
+                <dt class="col-sm-4">
+                    @Html.DisplayName("Vai trò")
+                </dt>
+                <dd class="col-sm-8">
+                    @Html.DisplayFor(model => model.VaiTro.TenVaiTro)
+                </dd>
+            </dl>
+        </div>
+        <div class="card-footer text-center">
+            @Html.ActionLink("Chỉnh sửa", "Edit", new { id = Model.TenDangNhap }, new { @class = "btn btn-warning me-2" })
+            @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-secondary" })
+        </div>
+    </div>
+</div>

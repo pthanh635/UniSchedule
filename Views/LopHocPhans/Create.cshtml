@@ -1,0 +1,105 @@
+﻿@model UniSchedule.Models.LopHocPhan
+
+@{
+    ViewBag.Title = "Thêm Lớp Học Phần";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+<style>
+    body {
+        background-color: #f0f2f5;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .card-custom {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        margin: auto;
+    }
+
+    .card-header {
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+    }
+
+    .form-control, .form-select {
+        border-radius: 12px;
+        height: 44px;
+    }
+
+    .btn-main {
+        background-color: #0d6efd;
+        color: white;
+        border-radius: 10px;
+        padding: 10px 20px;
+        font-weight: 500;
+    }
+
+        .btn-main:hover {
+            background-color: #0b5ed7;
+        }
+
+    .btn-secondary {
+        border-radius: 10px;
+    }
+</style>
+
+<div class="d-flex align-items-center justify-content-center min-vh-100">
+    <div class="card card-custom w-100">
+        <div class="card-header bg-primary text-white px-4 py-3">
+            <h4 class="mb-0"><i class="bi bi-journal-plus me-2"></i>Thêm Lớp Học Phần</h4>
+        </div>
+        <div class="card-body px-4 py-4 bg-white">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "alert alert-danger" })
+
+                <div class="mb-3">
+                    <label for="MaLHP" class="form-label">Mã lớp học phần</label>
+                    @Html.TextBoxFor(model => model.MaLHP, new { @class = "form-control", placeholder = "Nhập mã lớp học phần" })
+                    @Html.ValidationMessageFor(model => model.MaLHP, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    <label for="TenMH" class="form-label">Tên môn học</label>
+                    @Html.TextBoxFor(model => model.TenMH, new { @class = "form-control", placeholder = "Nhập tên môn học" })
+                    @Html.ValidationMessageFor(model => model.TenMH, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    <label for="SoTinChi" class="form-label">Số tín chỉ</label>
+                    @Html.TextBoxFor(model => model.SoTinChi, new { @class = "form-control", placeholder = "Nhập số tín chỉ" })
+                    @Html.ValidationMessageFor(model => model.SoTinChi, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    <label for="SoTietMoiTuan" class="form-label">Số tiết mỗi tuần</label>
+                    @Html.TextBoxFor(model => model.SoTietMoiTuan, new { @class = "form-control", placeholder = "Nhập số tiết mỗi tuần" })
+                    @Html.ValidationMessageFor(model => model.SoTietMoiTuan, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    <label for="SoLuongSinhVien" class="form-label">Số lượng sinh viên</label>
+                    @Html.TextBoxFor(model => model.SoLuongSinhVien, new { @class = "form-control", placeholder = "Nhập số lượng sinh viên" })
+                    @Html.ValidationMessageFor(model => model.SoLuongSinhVien, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-main">
+                        <i class="bi bi-check-circle me-1"></i> Lưu
+                    </button>
+                    @Html.ActionLink("Quay lại danh sách", "Index", null, new { @class = "btn btn-outline-secondary" })
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

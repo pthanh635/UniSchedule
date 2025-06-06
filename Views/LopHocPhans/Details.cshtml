@@ -1,0 +1,50 @@
+﻿@model UniSchedule.Models.LopHocPhan
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>LopHocPhan</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TenMH)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TenMH)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SoTinChi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SoTinChi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SoTietMoiTuan)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SoTietMoiTuan)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SoLuongSinhVien)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SoLuongSinhVien)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.MaLHP }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,238 @@
+﻿@model IEnumerable<UniSchedule.Models.LichDay>
+
+@{
+    ViewBag.Title = "Lịch giảng dạy";
+    var khoaList = ViewBag.KhoaList as List<SelectListItem>;
+    var hocKiList = ViewBag.HocKiList as List<SelectListItem>;
+    var namHocList = ViewBag.NamHocList as List<SelectListItem>;
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<style>
+    @@media print {
+        body {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+            margin: 0;
+        }
+
+        .no-print, .no-print * {
+            display: none !important;
+        }
+
+        .printable {
+            display: block !important;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        table {
+            font-size: 8pt !important;
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 100%;
+            table-layout: fixed;
+        }
+
+        th, td {
+            border: 1px solid black !important;
+            padding: 3px !important;
+            text-align: center;
+            word-wrap: break-word;
+            overflow: hidden;
+        }
+
+        th {
+            background-color: #e9ecef !important;
+            color: black !important;
+            font-weight: bold;
+        }
+
+        thead {
+            display: table-header-group;
+        }
+
+        tbody tr {
+            page-break-inside: avoid;
+        }
+
+        th:nth-child(1), td:nth-child(1) {
+            width: 10%;
+        }
+
+        th:nth-child(2), td:nth-child(2) {
+            width: 12%;
+        }
+
+        th:nth-child(3), td:nth-child(3) {
+            width: 10%;
+        }
+
+        th:nth-child(4), td:nth-child(4) {
+            width: 10%;
+        }
+
+        th:nth-child(5), td:nth-child(5) {
+            width: 8%;
+        }
+
+        th:nth-child(6), td:nth-child(6) {
+            width: 10%;
+        }
+
+        th:nth-child(7), td:nth-child(7) {
+            width: 10%;
+        }
+
+        th:nth-child(8), td:nth-child(8) {
+            width: 8%;
+        }
+
+        th:nth-child(9), td:nth-child(9) {
+            width: 10%;
+        }
+
+        th:nth-child(10), td:nth-child(10) {
+            width: 12%;
+        }
+
+        .badge {
+            font-size: 8pt !important;
+            background-color: #e9ecef !important;
+            color: black !important;
+            display: inline-block;
+            padding: 2px 4px !important;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 14pt !important;
+            margin-bottom: 10px !important;
+        }
+
+        @@page {
+            size: A4 portrait;
+            margin: 1cm;
+        }
+    }
+
+    .badge {
+        white-space: normal !important;
+    }
+</style>
+
+<div class="container mt-4 printable">
+    <h2 class="mb-4 text-primary text-center">📅 Lịch giảng dạy</h2>
+
+    <div class="d-flex align-items-end mb-3 no-print" style="gap: 1rem;">
+        <form method="get" action="@Url.Action("Index")" class="d-flex align-items-end" style="gap: 1rem; flex: 1;">
+            <div style="flex: 1; min-width: 150px;">
+                <label class="form-label">Khoa</label>
+                <select name="maKhoa" class="form-select" onchange="this.form.submit()">
+                    <option value="">-- Tất cả khoa --</option>
+                    @foreach (var khoa in khoaList)
+                    {
+                        <option value="@khoa.Value" @(Request.QueryString["maKhoa"] == khoa.Value ? "selected" : "")>
+                            @khoa.Text
+                        </option>
+                    }
+                </select>
+            </div>
+            <div style="flex: 1; min-width: 150px;">
+                <label class="form-label">Học kỳ</label>
+                <select name="hocKi" class="form-select" onchange="this.form.submit()">
+                    <option value="">-- Tất cả học kỳ --</option>
+                    @foreach (var hocKi in hocKiList)
+                    {
+                        <option value="@hocKi.Value" @(Request.QueryString["hocKi"] == hocKi.Value ? "selected" : "")>
+                            @hocKi.Text
+                        </option>
+                    }
+                </select>
+            </div>
+            <div style="flex: 1; min-width: 150px;">
+                <label class="form-label">Năm học</label>
+                <select name="namHoc" class="form-select" onchange="this.form.submit()">
+                    <option value="">-- Tất cả năm học --</option>
+                    @foreach (var namHoc in namHocList)
+                    {
+                        <option value="@namHoc.Value" @(Request.QueryString["namHoc"] == namHoc.Value ? "selected" : "")>
+                            @namHoc.Text
+                        </option>
+                    }
+                </select>
+            </div>
+        </form>
+        <div class="d-flex align-items-end" style="gap: 0.5rem;">
+            <button class="btn btn-outline-secondary btn-sm" onclick="window.print()">🖨 In lịch</button>
+            @Html.ActionLink("Xếp lịch mới", "XepLich", null, new { @class = "btn btn-success btn-sm" })
+            <form method="post" action="@Url.Action("DeleteAll")" onsubmit="return confirm('Bạn có chắc chắn muốn xóa toàn bộ lịch giảng dạy? Hành động này không thể hoàn tác.');">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-danger btn-sm">🗑 Xóa tất cả</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="table-responsive shadow rounded">
+        <table class="table table-hover align-middle table-bordered text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>👨‍🏫 Giảng viên</th>
+                    <th>📘 Lớp học phần</th>
+                    <th>🏢 Khoa</th>
+                    <th>🏫 Phòng học</th>
+                    <th>📅 Thứ</th>
+                    <th>⏰ Tiết</th>
+                    <th>📆 Tuần</th>
+                    <th>🎓 Học kỳ</th>
+                    <th>📅 Năm học</th>
+                    <th class="no-print">🛠 Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="10" class="text-muted">Không có lịch giảng dạy nào.</td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><span class="badge bg-info text-dark">@item.PhanCongGiangDay.GiangVien.TenGV</span></td>
+                            <td><span class="badge bg-info text-dark">@item.PhanCongGiangDay.LopHocPhan.TenMH</span></td>
+                            <td><span class="badge bg-info text-dark">@item.PhanCongGiangDay.GiangVien.Khoa.TenKhoa</span></td>
+                            <td><span class="badge bg-info text-dark">@item.PhongHoc.TenPhong</span></td>
+                            <td><span class="badge bg-info text-dark">Thứ @item.Thu</span></td>
+                            <td><span class="badge bg-info text-dark">Tiết @item.TietBatDau - @item.TietKetThuc</span></td>
+                            <td><span class="badge bg-info text-dark">Tuần @item.TuanBatDau - @item.TuanKetThuc</span></td>
+                            <td><span class="badge bg-info text-dark">@item.PhanCongGiangDay.HocKi</span></td>
+                            <td><span class="badge bg-info text-dark">@item.PhanCongGiangDay.NamHoc</span></td>
+                            <td class="text-center no-print">
+                                <a href="@Url.Action("Edit", new { id = item.MaLich })" class="btn btn-warning btn-sm mx-1">
+                                    <i class="bi bi-pencil-square"></i> Sửa
+                                </a>
+                                <a href="@Url.Action("Details", new { id = item.MaLich })" class="btn btn-info btn-sm mx-1">
+                                    <i class="bi bi-eye"></i> Xem
+                                </a>
+                                <a href="@Url.Action("Delete", new { id = item.MaLich })" class="btn btn-danger btn-sm mx-1">
+                                    <i class="bi bi-trash"></i> Xóa
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

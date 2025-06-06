@@ -1,0 +1,70 @@
+﻿@model IEnumerable<UniSchedule.Models.LichDay>
+@{
+    ViewBag.Title = "Lịch giảng dạy";
+    int maVaiTro = (int)Session["MaVaiTro"];
+    string backUrl;
+    if (maVaiTro == 1)
+    {
+        backUrl = Url.Action("GiangVien", "Home");
+    }
+    else if (maVaiTro == 0)
+    {
+        backUrl = Url.Action("GiaoVu", "Home");
+    }
+    else
+    {
+        backUrl = Url.Action("Login", "Home");
+    }
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<style>
+    @@media print {
+        .no-print, .hide-on-print {
+            display: none !important;
+        }
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3 hide-on-print">
+        <h5 class="text-primary">📅 Lịch giảng dạy của: <strong>@ViewBag.TenGV</strong></h5>
+
+        <div class="d-flex gap-2 ms-auto">
+            <button class="btn btn-outline-secondary btn-sm no-print" onclick="window.print()">🖨 In lịch</button>
+            <a class="btn btn-outline-primary btn-sm" href="@backUrl">🔙 Quay lại</a>
+        </div>
+    </div>
+
+    <div class="table-responsive shadow rounded">
+        <table class="table table-hover align-middle table-bordered text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>📘 Lớp Học Phần</th>
+                    <th>🏫 Phòng học</th>
+                    <th>📅 Thứ</th>
+                    <th>⏰ Tiết</th>
+                    <th>📆 Tuần</th>
+                    <th>📖 Học kỳ</th>
+                    <th>📅 Năm học</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><span class="badge bg-info text-dark">@item.PhanCongGiangDay.LopHocPhan.TenMH</span></td>
+                        <td><span class="badge bg-info text-dark">@item.PhongHoc.TenPhong</span></td>
+                        <td><span class="badge bg-info text-dark">Thứ @item.Thu</span></td>
+                        <td><span class="badge bg-info text-dark">@item.TietBatDau - @item.TietKetThuc</span></td>
+                        <td><span class="badge bg-info text-dark">@item.TuanBatDau - @item.TuanKetThuc</span></td>
+                        <td><span class="badge bg-info text-dark">@item.PhanCongGiangDay.HocKi</span></td>
+                        <td><span class="badge bg-info text-dark">@item.PhanCongGiangDay.NamHoc</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
