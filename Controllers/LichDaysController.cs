@@ -381,9 +381,15 @@ namespace UniSchedule.Controllers
                 {
                     workbook.SaveAs(stream);
                     stream.Position = 0;
+
+                    // Đặt tên file theo logic
+                    string fileName = string.IsNullOrEmpty(maKhoa)
+                        ? "LichDayDUT.xlsx"
+                        : $"LichDayKhoa{maKhoa}.xlsx";
+
                     return File(stream.ToArray(),
                         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                        "LichDay.xlsx");
+                        fileName);
                 }
             }
         }
