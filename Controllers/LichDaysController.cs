@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
@@ -320,6 +321,71 @@ namespace UniSchedule.Controllers
             if (disposing)
                 db.Dispose();
             base.Dispose(disposing);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ExportToExcel(int? hocKi, string namHoc, string maKhoa)
+        {
+            var lichList = db.LichDays
+                .Include(l => l.PhanCongGiangDay.GiangVien.Khoa)
+                .Include(l => l.PhanCongGiangDay.LopHocPhan)
+                .Include(l => l.PhongHoc)
+                .AsQueryable();
+
+            if (hocKi.HasValue)
+                lichList = lichList.Where(l => l.PhanCongGiangDay.HocKi == hocKi);
+
+            if (!string.IsNullOrEmpty(namHoc))
+                lichList = lichList.Where(l => l.PhanCongGiangDay.NamHoc == namHoc);
+
+            if (!string.IsNullOrEmpty(maKhoa))
+                lichList = lichList.Where(l => l.PhanCongGiangDay.GiangVien.MaKhoa == maKhoa);
+
+            var data = lichList.ToList();
+
+            using (var workbook = new ClosedXML.Excel.XLWorkbook())
+            {
+                var worksheet = workbook.Worksheets.Add("LichDay");
+                // Set column headers in the specified order
+                worksheet.Cell(1, 1).Value = "Số thứ tự";
+                worksheet.Cell(1, 2).Value = "Giảng Viên";
+                worksheet.Cell(1, 3).Value = "Lớp Học Phần";
+                worksheet.Cell(1, 4).Value = "Khoa";
+                worksheet.Cell(1, 5).Value = "Phòng Học";
+                worksheet.Cell(1, 6).Value = "Thứ";
+                worksheet.Cell(1, 7).Value = "Tiết";
+                worksheet.Cell(1, 8).Value = "Tuần";
+                worksheet.Cell(1, 9).Value = "Học Kì";
+                worksheet.Cell(1, 10).Value = "Năm Học";
+
+                int row = 2;
+                int stt = 1;
+
+                foreach (var item in data)
+                {
+                    worksheet.Cell(row, 1).Value = stt++;
+                    worksheet.Cell(row, 2).Value = item.PhanCongGiangDay?.GiangVien?.TenGV;
+                    worksheet.Cell(row, 3).Value = item.PhanCongGiangDay?.LopHocPhan?.TenMH;
+                    worksheet.Cell(row, 4).Value = item.PhanCongGiangDay?.GiangVien?.Khoa?.TenKhoa;
+                    worksheet.Cell(row, 5).Value = item.PhongHoc?.TenPhong;
+                    worksheet.Cell(row, 6).Value = item.Thu;
+                    worksheet.Cell(row, 7).Value = $"{item.TietBatDau}-{item.TietKetThuc}";
+                    worksheet.Cell(row, 8).Value = $"{item.TuanBatDau}-{item.TuanKetThuc}";
+                    worksheet.Cell(row, 9).Value = item.PhanCongGiangDay?.HocKi;
+                    worksheet.Cell(row, 10).Value = item.PhanCongGiangDay?.NamHoc;
+                    row++;
+                }
+
+                using (var stream = new MemoryStream())
+                {
+                    workbook.SaveAs(stream);
+                    stream.Position = 0;
+                    return File(stream.ToArray(),
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        "LichDay.xlsx");
+                }
+            }
         }
     }
 }
