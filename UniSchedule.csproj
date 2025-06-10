@@ -328,6 +328,7 @@
     <Content Include="Views\LichDays\Index.cshtml" />
     <Content Include="Views\LichDays\XepLich.cshtml" />
     <Content Include="Views\LichDays\XemLich.cshtml" />
+    <Content Include="Views\Home\PhongDaoTao.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

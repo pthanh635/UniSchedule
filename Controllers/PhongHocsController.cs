@@ -15,7 +15,7 @@ namespace XepLichGiangVien.Controllers
         private XepLichGiangVienEntities db = new XepLichGiangVienEntities();
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (Session["MaVaiTro"] == null || (int)Session["MaVaiTro"] != 0)
+            if (Session["MaVaiTro"] == null || (int)Session["MaVaiTro"] != 2)
             {
                 // Không phải GiaoVu thì chuyển về trang login
                 filterContext.Result = RedirectToAction("Login", "Home");

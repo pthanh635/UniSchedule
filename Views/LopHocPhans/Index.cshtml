@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Danh sách Lớp Học Phần";
     var danhSachPhanCong = ViewBag.PhanCong as List<UniSchedule.Models.PhanCongGiangDay>;
+    int maVaiTro = ViewBag.MaVaiTro ?? -1;
 }
 
 <div class="container my-5">
@@ -10,10 +11,13 @@
         <h2 class="fw-bold">
             <i class="bi bi-journal-bookmark-fill me-2"></i>Danh sách Lớp Học Phần
         </h2>
+    @if (maVaiTro == 2)
+    {
         @Html.ActionLink("➕ Thêm mới", "Create", null, new
         {
             @class = "btn btn-success btn-lg rounded-pill shadow-sm"
         })
+    }
     </div>
 
     <div class="card shadow-lg rounded-4 border-0">
@@ -25,7 +29,10 @@
                         <th class="text-center">Số Tín Chỉ</th>
                         <th class="text-center">Số Tiết Mỗi Tuần</th>
                         <th class="text-center">Số Lượng Sinh Viên</th>
-                        <th class="text-center">Phân Công</th> <!-- Cột mới -->
+                        @if (maVaiTro == 0)
+                        {
+                            <th class="text-center">Trạng Thái</th>
+                        }
                         <th class="text-center">Thao tác</th>
                     </tr>
                 </thead>
@@ -39,27 +46,46 @@
                             <td class="align-middle text-center">@Html.DisplayFor(modelItem => item.SoTinChi)</td>
                             <td class="align-middle text-center">@Html.DisplayFor(modelItem => item.SoTietMoiTuan)</td>
                             <td class="align-middle text-center">@Html.DisplayFor(modelItem => item.SoLuongSinhVien)</td>
-                            <td class="align-middle text-center">
-                                @if (!daPhanCong)
-                                {
-                                    @Html.ActionLink("Chưa Phân Công", "Create", "PhanCongGiangDays", new { maLHP = item.MaLHP }, new
+                            @if (maVaiTro == 0)
+                            {
+                                <td class="align-middle text-center">
+
+                                    @if (!daPhanCong)
                                     {
-                                        @class = "btn btn-outline-primary btn-sm rounded-pill"
-                                    })
-                                }
-                                else
-                                {
-                                    <span class="badge bg-success px-3 py-2">Đã phân công</span>
-                                }
-                            </td>
-                            <td class="align-middle text-center">
-                                <div class="d-flex justify-content-center gap-2">
-                                    @Html.ActionLink("✏️", "Edit", new { id = item.MaLHP }, new { @class = "btn btn-warning btn-sm rounded-pill" })
-                                    @Html.ActionLink("🔍", "Details", new { id = item.MaLHP }, new { @class = "btn btn-info btn-sm rounded-pill text-white" })
-                                    @Html.ActionLink("🗑️", "Delete", new { id = item.MaLHP }, new { @class = "btn btn-danger btn-sm rounded-pill" })
-                                </div>
-                            </td>
-                        </tr>
+                                        if (maVaiTro == 0) // Giáo vụ mới được phân công
+                                        {
+                                            @Html.ActionLink("Chưa Phân Công", "Create", "PhanCongGiangDays", new { maLHP = item.MaLHP }, new
+                                       {
+                                           @class = "btn btn-outline-primary btn-sm rounded-pill"
+                                       })
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Chưa phân công</span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success px-3 py-2">Đã phân công</span>
+                                    }
+                                </td>
+                            }
+                                <td class="align-middle text-center">
+                                    <div class="d-flex justify-content-center gap-2">
+                                        @if (maVaiTro == 2)
+                                        {
+                                            @Html.ActionLink("✏️", "Edit", new { id = item.MaLHP }, new { @class = "btn btn-warning btn-sm rounded-pill" })
+                                        }
+
+                                        @Html.ActionLink("🔍", "Details", new { id = item.MaLHP }, new { @class = "btn btn-info btn-sm rounded-pill text-white" })
+
+                                        @if (maVaiTro == 2)
+                                        {
+                                            @Html.ActionLink("🗑️", "Delete", new { id = item.MaLHP }, new { @class = "btn btn-danger btn-sm rounded-pill" })
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
                     }
                 </tbody>
             </table>

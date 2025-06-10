@@ -15,9 +15,8 @@ namespace UniSchedule.Controllers
         private XepLichGiangVienEntities db = new XepLichGiangVienEntities();
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (Session["MaVaiTro"] == null || (int)Session["MaVaiTro"] != 0)
+            if (Session["MaVaiTro"] == null || (int)Session["MaVaiTro"] == 1)
             {
-                // Không phải GiaoVu thì chuyển về trang login
                 filterContext.Result = RedirectToAction("Login", "Home");
             }
             base.OnActionExecuting(filterContext);
@@ -28,6 +27,7 @@ namespace UniSchedule.Controllers
             var danhSachLHP = db.LopHocPhans.ToList();
             var danhSachPhanCong = db.PhanCongGiangDays.ToList();
             ViewBag.PhanCong = danhSachPhanCong;
+            ViewBag.MaVaiTro = Session["MaVaiTro"];
             return View(danhSachLHP);
         }
 

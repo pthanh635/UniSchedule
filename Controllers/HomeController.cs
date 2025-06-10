@@ -38,6 +38,10 @@ namespace XepLichGiangVien.Controllers
                 {
                     return RedirectToAction("GiangVien", "Home");
                 }
+                else if (taiKhoan.MaVaiTro == 2)
+                {
+                    return RedirectToAction("PhongDaoTao", "Home");
+                }
             }
             else
             {
@@ -47,7 +51,14 @@ namespace XepLichGiangVien.Controllers
 
             return View();
         }
-
+        public ActionResult PhongDaoTao()
+        {
+            if (Session["MaVaiTro"] == null || (int)Session["MaVaiTro"] != 2)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            return View();
+        }
         public ActionResult GiaoVu()
         {
             if (Session["MaVaiTro"] == null || (int)Session["MaVaiTro"] != 0)
@@ -81,7 +92,6 @@ namespace XepLichGiangVien.Controllers
 
             return View(giangVien);
         }
-
         public ActionResult Logout()
         {
             Session.Clear();

@@ -18,7 +18,7 @@
 
                 <div class="row mb-3">
                     <div class="col-md-4">
-                        @Html.LabelFor(model => model.TenDangNhap, htmlAttributes: new { @class = "form-label" })
+                        <label class="form-label">Tên đăng nhập</label>
                     </div>
                     <div class="col-md-8">
                         @Html.EditorFor(model => model.TenDangNhap, new { htmlAttributes = new { @class = "form-control" } })
@@ -28,7 +28,7 @@
 
                 <div class="row mb-3">
                     <div class="col-md-4">
-                        @Html.LabelFor(model => model.MatKhau, htmlAttributes: new { @class = "form-label" })
+                        <label class="form-label">Mật khẩu</label>
                     </div>
                     <div class="col-md-8">
                         @Html.EditorFor(model => model.MatKhau, new { htmlAttributes = new { @class = "form-control" } })

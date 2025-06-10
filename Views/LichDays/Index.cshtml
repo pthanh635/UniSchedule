@@ -13,122 +13,122 @@
 
 <style>
     @@media print {
-    body {
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-        margin: 0;
-        box-sizing: border-box;
-    }
+        body {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+            margin: 0;
+            box-sizing: border-box;
+        }
 
-    .no-print, .no-print * {
-        display: none !important;
-    }
+        .no-print, .no-print * {
+            display: none !important;
+        }
 
-    .printable {
-        display: block !important;
-        width: 100%;
-        margin: 0;
-        padding: 0;
-    }
+        .printable {
+            display: block !important;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
 
-    table {
-        font-size: 8pt !important;
-        border-collapse: collapse;
-        width: 100%;
-        max-width: 100%;
-        table-layout: fixed;
-        box-sizing: border-box;
-    }
+        table {
+            font-size: 8pt !important;
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 100%;
+            table-layout: fixed;
+            box-sizing: border-box;
+        }
 
-    th, td {
-        border: 1px solid black !important;
-        padding: 4px !important; /* Tăng nhẹ padding */
-        text-align: center;
-        word-wrap: break-word;
-        overflow: hidden;
-        vertical-align: middle;
-    }
+        th, td {
+            border: 1px solid black !important;
+            padding: 4px !important; /* Tăng nhẹ padding */
+            text-align: center;
+            word-wrap: break-word;
+            overflow: hidden;
+            vertical-align: middle;
+        }
 
-    th {
-        background-color: #e9ecef !important;
-        color: black !important;
-        font-weight: bold;
-    }
+        th {
+            background-color: #e9ecef !important;
+            color: black !important;
+            font-weight: bold;
+        }
 
-    thead {
-        display: table-header-group;
-    }
+        thead {
+            display: table-header-group;
+        }
 
-    tbody tr {
-        page-break-inside: avoid;
-    }
+        tbody tr {
+            page-break-inside: avoid;
+        }
 
-    th:nth-child(1), td:nth-child(1) {
-        min-width: 10%;
-    }
+        th:nth-child(1), td:nth-child(1) {
+            min-width: 10%;
+        }
 
-    th:nth-child(2), td:nth-child(2) {
-        min-width: 12%;
-    }
+        th:nth-child(2), td:nth-child(2) {
+            min-width: 12%;
+        }
 
-    th:nth-child(3), td:nth-child(3) {
-        min-width: 10%;
-    }
+        th:nth-child(3), td:nth-child(3) {
+            min-width: 10%;
+        }
 
-    th:nth-child(4), td:nth-child(4) {
-        min-width: 10%;
-    }
+        th:nth-child(4), td:nth-child(4) {
+            min-width: 10%;
+        }
 
-    th:nth-child(5), td:nth-child(5) {
-        min-width: 8%;
-    }
+        th:nth-child(5), td:nth-child(5) {
+            min-width: 8%;
+        }
 
-    th:nth-child(6), td:nth-child(6) {
-        min-width: 10%;
-    }
+        th:nth-child(6), td:nth-child(6) {
+            min-width: 10%;
+        }
 
-    th:nth-child(7), td:nth-child(7) {
-        min-width: 10%;
-    }
+        th:nth-child(7), td:nth-child(7) {
+            min-width: 10%;
+        }
 
-    th:nth-child(8), td:nth-child(8) {
-        min-width: 8%;
-    }
+        th:nth-child(8), td:nth-child(8) {
+            min-width: 8%;
+        }
 
-    th:nth-child(9), td:nth-child(9) {
-        min-width: 10%;
-    }
+        th:nth-child(9), td:nth-child(9) {
+            min-width: 10%;
+        }
 
-    th:nth-child(10), td:nth-child(10) {
-        min-width: 12%;
+        th:nth-child(10), td:nth-child(10) {
+            min-width: 12%;
+        }
+
+        .badge {
+            font-size: 8pt !important;
+            background-color: #e9ecef !important;
+            color: black !important;
+            display: inline-block;
+            padding: 3px 6px !important; /* Tăng padding cho badge */
+            white-space: normal !important;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 14pt !important;
+            margin-bottom: 10px !important;
+        }
+
+        @@page {
+            size: A4 portrait;
+            margin: 1cm;
+            orphans: 2;
+            widows: 2;
+        }
     }
 
     .badge {
-        font-size: 8pt !important;
-        background-color: #e9ecef !important;
-        color: black !important;
-        display: inline-block;
-        padding: 3px 6px !important; /* Tăng padding cho badge */
         white-space: normal !important;
     }
-
-    h2 {
-        text-align: center;
-        font-size: 14pt !important;
-        margin-bottom: 10px !important;
-    }
-
-    @@page {
-        size: A4 portrait;
-        margin: 1cm;
-        orphans: 2;
-        widows: 2;
-    }
-}
-
-.badge {
-    white-space: normal !important;
-}
 </style>
 
 <div class="container mt-4 printable">
@@ -174,19 +174,28 @@
             </div>
         </form>
         <div class="d-flex align-items-end" style="gap: 0.5rem;">
-            @Html.ActionLink("Xếp lịch mới", "XepLich", null, new { @class = "btn btn-success btn-sm" })
+            @if (ViewBag.MaVaiTro == 2) // Nhân viên PĐT
+            {
+                @Html.ActionLink("🗓 Xếp lịch mới", "XepLich", null, new { @class = "btn btn-success btn-sm" })
+            }
+
             <button class="btn btn-outline-secondary btn-sm" onclick="window.print()">🖨 In lịch</button>
-            <form method="post" action="@Url.Action("ExportToExcel")">
+
+            <form id="exportForm" method="post" action="@Url.Action("ExportToExcel")" onsubmit="return validateExport();">
                 @Html.AntiForgeryToken()
-                <input type="hidden" name="hocKi" value="@Request.QueryString["hocKi"]" />
-                <input type="hidden" name="namHoc" value="@Request.QueryString["namHoc"]" />
-                <input type="hidden" name="maKhoa" value="@Request.QueryString["maKhoa"]" />
+                <input type="hidden" id="hocKiHidden" name="hocKi" value="@Request.QueryString["hocKi"]" />
+                <input type="hidden" id="namHocHidden" name="namHoc" value="@Request.QueryString["namHoc"]" />
+                <input type="hidden" id="maKhoaHidden" name="maKhoa" value="@Request.QueryString["maKhoa"]" />
                 <button type="submit" class="btn btn-primary btn-sm">📄 Xuất Excel</button>
             </form>
-            <form method="post" action="@Url.Action("DeleteAll")" onsubmit="return confirm('Bạn có chắc chắn muốn xóa toàn bộ lịch giảng dạy? Hành động này không thể hoàn tác.');">
-                @Html.AntiForgeryToken()
-                <button type="submit" class="btn btn-danger btn-sm">🗑 Xóa tất cả</button>
-            </form>
+
+            @if (ViewBag.MaVaiTro == 2) // Nhân viên PĐT
+            {
+                <form method="post" action="@Url.Action("DeleteAll")" onsubmit="return confirm('Bạn có chắc chắn muốn xóa toàn bộ lịch giảng dạy? Hành động này không thể hoàn tác.');">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-danger btn-sm">🗑 Xóa tất cả</button>
+                </form>
+            }
         </div>
     </div>
 
@@ -217,17 +226,19 @@
                 {
                     foreach (var item in Model)
                     {
-                        <tr>
-                            <td><span class="badge bg-info text-dark">@item.PhanCongGiangDay.GiangVien.TenGV</span></td>
-                            <td><span class="badge bg-info text-dark">@item.PhanCongGiangDay.LopHocPhan.TenMH</span></td>
-                            <td><span class="badge bg-info text-dark">@item.PhanCongGiangDay.GiangVien.Khoa.TenKhoa</span></td>
-                            <td><span class="badge bg-info text-dark">@item.PhongHoc.TenPhong</span></td>
-                            <td><span class="badge bg-info text-dark">Thứ @item.Thu</span></td>
-                            <td><span class="badge bg-info text-dark">Tiết @item.TietBatDau - @item.TietKetThuc</span></td>
-                            <td><span class="badge bg-info text-dark">Tuần @item.TuanBatDau - @item.TuanKetThuc</span></td>
-                            <td><span class="badge bg-info text-dark">@item.PhanCongGiangDay.HocKi</span></td>
-                            <td><span class="badge bg-info text-dark">@item.PhanCongGiangDay.NamHoc</span></td>
-                            <td class="text-center no-print">
+                    <tr>
+                        <td><span class="badge bg-info text-dark">@item.PhanCongGiangDay.GiangVien.TenGV</span></td>
+                        <td><span class="badge bg-info text-dark">@item.PhanCongGiangDay.LopHocPhan.TenMH</span></td>
+                        <td><span class="badge bg-info text-dark">@item.PhanCongGiangDay.GiangVien.Khoa.TenKhoa</span></td>
+                        <td><span class="badge bg-info text-dark">@item.PhongHoc.TenPhong</span></td>
+                        <td><span class="badge bg-info text-dark">Thứ @item.Thu</span></td>
+                        <td><span class="badge bg-info text-dark">Tiết @item.TietBatDau - @item.TietKetThuc</span></td>
+                        <td><span class="badge bg-info text-dark">Tuần @item.TuanBatDau - @item.TuanKetThuc</span></td>
+                        <td><span class="badge bg-info text-dark">@item.PhanCongGiangDay.HocKi</span></td>
+                        <td><span class="badge bg-info text-dark">@item.PhanCongGiangDay.NamHoc</span></td>
+                        <td class="text-center no-print">
+                            @if (ViewBag.MaVaiTro == 2) // Nhân viên PĐT
+                            {
                                 <a href="@Url.Action("Edit", new { id = item.MaLich })" class="btn btn-warning btn-sm custom-btn-sm mx-1">
                                     <i class="bi bi-pencil-square"></i> Sửa
                                 </a>
@@ -237,8 +248,15 @@
                                 <a href="@Url.Action("Delete", new { id = item.MaLich })" class="btn btn-danger btn-sm custom-btn-sm mx-1">
                                     <i class="bi bi-trash"></i> Xóa
                                 </a>
-                            </td>
-                        </tr>
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("Details", new { id = item.MaLich })" class="btn btn-info btn-sm custom-btn-sm mx-1">
+                                    <i class="bi bi-eye"></i> Xem
+                                </a>
+                            }
+                        </td>
+                    </tr>
                     }
                 }
             </tbody>
@@ -248,4 +266,16 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        function validateExport() {
+            var hocKi = document.getElementById("hocKiHidden").value;
+            var namHoc = document.getElementById("namHocHidden").value;
+
+            if (!hocKi || !namHoc) {
+                alert("Chọn Học Kì và Năm Học cần xuất file.");
+                return false;
+            }
+            return true;
+        }
+    </script>
 }

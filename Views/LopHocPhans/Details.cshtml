@@ -1,50 +1,34 @@
 ﻿@model UniSchedule.Models.LopHocPhan
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Chi tiết lớp học phần";
 }
 
-<h2>Details</h2>
+<div class="container my-5">
+    <h2 class="text-center text-primary fw-bold mb-4">
+        <i class="fas fa-book-open me-2"></i>CHI TIẾT LỚP HỌC PHẦN
+    </h2>
 
-<div>
-    <h4>LopHocPhan</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.TenMH)
-        </dt>
+    <div class="card shadow-lg border-0">
+        <div class="card-body p-4">
+            <dl class="row mb-0">
+                <dt class="col-md-4 text-muted">📘 Tên lớp học phần</dt>
+                <dd class="col-md-8 fw-semibold">@Model.TenMH</dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.TenMH)
-        </dd>
+                <dt class="col-md-4 text-muted">🎓 Số tín chỉ</dt>
+                <dd class="col-md-8">@Model.SoTinChi</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.SoTinChi)
-        </dt>
+                <dt class="col-md-4 text-muted">⏳ Số tiết mỗi tuần</dt>
+                <dd class="col-md-8">@Model.SoTietMoiTuan</dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.SoTinChi)
-        </dd>
+                <dt class="col-md-4 text-muted">👥 Số lượng sinh viên</dt>
+                <dd class="col-md-8">@Model.SoLuongSinhVien</dd>
+            </dl>
+        </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.SoTietMoiTuan)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SoTietMoiTuan)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SoLuongSinhVien)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SoLuongSinhVien)
-        </dd>
-
-    </dl>
+        <div class="card-footer bg-white text-end">
+            @Html.ActionLink("✏️ Sửa", "Edit", new { id = Model.MaLHP }, new { @class = "btn btn-warning me-2" })
+            @Html.ActionLink("↩️ Quay lại", "Index", null, new { @class = "btn btn-secondary" })
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.MaLHP }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

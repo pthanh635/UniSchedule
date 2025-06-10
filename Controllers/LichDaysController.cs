@@ -16,7 +16,6 @@ namespace UniSchedule.Controllers
         {
             if (Session["MaVaiTro"] == null)
             {
-                // Không phải GiaoVu thì chuyển về trang login
                 filterContext.Result = RedirectToAction("Login", "Home");
             }
             base.OnActionExecuting(filterContext);
@@ -24,6 +23,9 @@ namespace UniSchedule.Controllers
         // GET: LichDays
         public ActionResult Index(int? hocKi, string namHoc, string maKhoa)
         {
+            int maVaiTro = Session["MaVaiTro"] != null ? (int)Session["MaVaiTro"] : -1;
+
+            ViewBag.MaVaiTro = maVaiTro;
             var lichList = db.LichDays
                 .Include(l => l.PhongHoc)
                 .Include(l => l.PhanCongGiangDay.GiangVien.Khoa)
@@ -52,7 +54,6 @@ namespace UniSchedule.Controllers
             };
             ViewBag.HocKiList = hocKiList;
 
-            // Tạo danh sách năm học cho dropdown
             int currentYear = DateTime.Now.Year;
             var namHocList = new List<SelectListItem>
             {
@@ -61,7 +62,6 @@ namespace UniSchedule.Controllers
             };
             ViewBag.NamHocList = namHocList;
 
-            // Tạo danh sách khoa cho dropdown
             var khoaList = db.Khoas
                 .Select(k => new SelectListItem
                 {
@@ -76,7 +76,6 @@ namespace UniSchedule.Controllers
         // GET: LichDays/XepLich
         public ActionResult XepLich()
         {
-            // Tạo danh sách học kỳ cho dropdown
             var hocKiList = new List<SelectListItem>
             {
                 new SelectListItem { Value = "1", Text = "Học kỳ 1" },
@@ -85,7 +84,6 @@ namespace UniSchedule.Controllers
             };
             ViewBag.HocKiList = hocKiList;
 
-            // Tạo danh sách năm học cho dropdown
             int currentYear = DateTime.Now.Year;
             var namHocList = new List<SelectListItem>
             {
@@ -96,24 +94,23 @@ namespace UniSchedule.Controllers
 
             return View();
         }
+
         // POST: LichDays/XepLich
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult XepLich(int? hocKi, string namHoc)
         {
-            // Kiểm tra HocKi
             if (!hocKi.HasValue || !new[] { 1, 2, 3 }.Contains(hocKi.Value))
             {
-                TempData["Error"] = "Vui lòng chọn học kỳ hợp lệ (1, 2 hoặc 3).";
+                TempData["Error"] = "Vui lòng chọn học kỳ.";
                 return RedirectToAction("XepLich");
             }
 
-            // Kiểm tra NamHoc
             int currentYear = DateTime.Now.Year;
             var validNamHocs = new[] { $"{currentYear - 1}-{currentYear}", $"{currentYear}-{currentYear + 1}" };
             if (string.IsNullOrEmpty(namHoc) || !validNamHocs.Contains(namHoc))
             {
-                TempData["Error"] = "Vui lòng chọn năm học hợp lệ.";
+                TempData["Error"] = "Vui lòng chọn năm học.";
                 return RedirectToAction("XepLich");
             }
 
@@ -121,57 +118,51 @@ namespace UniSchedule.Controllers
                 .Where(p => p.HocKi == hocKi && p.NamHoc == namHoc)
                 .ToList();
 
+            var lichTam = new List<LichDay>();
+
             foreach (var pc in phanCongs)
             {
-                // Nếu lịch đã tồn tại, bỏ qua
                 if (db.LichDays.Any(ld => ld.MaPhanCong == pc.MaPhanCong))
                     continue;
 
-                // Chọn phòng học ngẫu nhiên đủ chỗ
                 var phongPhuHop = db.PhongHocs
                     .Where(p => p.SoLuongChoNgoi >= pc.LopHocPhan.SoLuongSinhVien)
-                    .OrderBy(r => Guid.NewGuid()) 
+                    .OrderBy(r => Guid.NewGuid())
                     .ToList();
 
                 foreach (var phong in phongPhuHop)
                 {
-                    var lich = GenerateLichDay(pc, phong.MaPhong);
+                    var lich = GenerateLichDay(pc, phong.MaPhong, lichTam);
                     if (lich != null)
                     {
-                        db.LichDays.Add(lich);
+                        lichTam.Add(lich);
                         break;
                     }
                 }
             }
 
+            db.LichDays.AddRange(lichTam);
             db.SaveChanges();
+
             return RedirectToAction("Index");
         }
 
-        private LichDay GenerateLichDay(PhanCongGiangDay pc, string maPhong)
+        // Hàm sinh lịch
+        private LichDay GenerateLichDay(PhanCongGiangDay pc, string maPhong, List<LichDay> lichTam)
         {
-            var phong = db.PhongHocs.Find(maPhong);
-            if (phong == null || pc.LopHocPhan.SoLuongSinhVien > phong.SoLuongChoNgoi)
-                return null;
-
+    
             string maGV = pc.MaGV;
             int soTiet = pc.LopHocPhan.SoTietMoiTuan;
 
             int tuanBatDau, tuanKetThuc;
             switch (pc.HocKi)
             {
-                case 1: // Học kỳ 1
-                    tuanBatDau = 3;
-                    tuanKetThuc = 18;
-                    break;
-                case 2: // Học kỳ 2
-                    tuanBatDau = 24;
-                    tuanKetThuc = 42;
-                    break;
-                case 3: // Học kỳ hè
-                    tuanBatDau = 44;
-                    tuanKetThuc = 50;
-                    break;
+                case 1:
+                    tuanBatDau = 3; tuanKetThuc = 18; break;
+                case 2:
+                    tuanBatDau = 24; tuanKetThuc = 42; break;
+                case 3:
+                    tuanBatDau = 44; tuanKetThuc = 50; break;
                 default:
                     return null;
             }
@@ -185,13 +176,16 @@ namespace UniSchedule.Controllers
                 {
                     int tietKT = tietBD + soTiet - 1;
 
-                    bool trungGV = db.LichDays.Any(ld =>
-                        ld.PhanCongGiangDay.MaGV == maGV &&
-                        ld.Thu == thu &&
-                        !(ld.TietKetThuc < tietBD || ld.TietBatDau > tietKT) &&
-                        !(ld.TuanKetThuc < tuanBatDau || ld.TuanBatDau > tuanKetThuc));
+                    bool trungGV = lichTam.Any(ld =>
+                    {
+                        var pcLD = db.PhanCongGiangDays.Find(ld.MaPhanCong);
+                        return pcLD.MaGV == maGV &&
+                               ld.Thu == thu &&
+                               !(ld.TietKetThuc < tietBD || ld.TietBatDau > tietKT) &&
+                               !(ld.TuanKetThuc < tuanBatDau || ld.TuanBatDau > tuanKetThuc);
+                    });
 
-                    bool trungPhong = db.LichDays.Any(ld =>
+                    bool trungPhong = lichTam.Any(ld =>
                         ld.MaPhong == maPhong &&
                         ld.Thu == thu &&
                         !(ld.TietKetThuc < tietBD || ld.TietBatDau > tietKT) &&
@@ -199,7 +193,7 @@ namespace UniSchedule.Controllers
 
                     if (!trungGV && !trungPhong)
                     {
-                        int score = CalculateScore(thu, tietBD, maGV, tietKT);
+                        int score = CalculateScore(thu, tietBD, maGV, tietKT, lichTam);
                         if (score > bestScore)
                         {
                             bestScore = score;
@@ -221,22 +215,36 @@ namespace UniSchedule.Controllers
             return bestSlot;
         }
 
-        private int CalculateScore(int thu, int tietBD, string maGV, int tietKT)
+        // Hàm tính điểm ưu tiên cho lịch
+        private int CalculateScore(int thu, int tietBD, string maGV, int tietKT, List<LichDay> lichTam)
         {
             int score = 0;
 
-            if (tietBD <= 5) score += 5;
-            if (tietBD == 1 || tietBD == 4) score += 2;
-            if (thu == 2 || thu == 4 || thu == 6) score += 2;
+            if (tietBD <= 5) score += 3;
+            if (tietBD == 1 || tietBD == 4) score += 1;
 
-            bool coTietLien = db.LichDays.Any(ld =>
-                ld.PhanCongGiangDay.MaGV == maGV &&
-                ld.Thu == thu &&
-                (ld.TietKetThuc + 1 == tietBD || ld.TietBatDau - 1 == tietKT));
-            if (coTietLien) score += 3;
+            bool coTietLien = lichTam.Any(ld =>
+            {
+                var pcLD = db.PhanCongGiangDays.Find(ld.MaPhanCong);
+                return pcLD.MaGV == maGV &&
+                       ld.Thu == thu &&
+                       (ld.TietKetThuc + 1 == tietBD || ld.TietBatDau - 1 == tietKT);
+            });
+            if (coTietLien) score += 4;
+
+            int soBuoiTrongThuGV = lichTam.Count(ld =>
+            {
+                var pcLD = db.PhanCongGiangDays.Find(ld.MaPhanCong);
+                return pcLD.MaGV == maGV && ld.Thu == thu;
+            });
+            score += (5 - soBuoiTrongThuGV);
+
+            int tongLopTrongThu = lichTam.Count(ld => ld.Thu == thu);
+            score += (10 - tongLopTrongThu);
 
             return score;
         }
+
         public ActionResult XemLich()
         {
             string maGV = Session["MaGV"].ToString();
@@ -382,7 +390,6 @@ namespace UniSchedule.Controllers
                     workbook.SaveAs(stream);
                     stream.Position = 0;
 
-                    // Đặt tên file theo logic
                     string fileName = string.IsNullOrEmpty(maKhoa)
                         ? "LichDayDUT.xlsx"
                         : $"LichDayKhoa{maKhoa}.xlsx";
