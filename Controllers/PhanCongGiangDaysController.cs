@@ -15,7 +15,7 @@ namespace UniSchedule.Controllers
         private XepLichGiangVienEntities db = new XepLichGiangVienEntities();
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            if (Session["MaVaiTro"] == null || (int)Session["MaVaiTro"] != 0)
+            if (Session["MaVaiTro"] == null || (int)Session["MaVaiTro"] == 1)
             {
                 // Không phải GiaoVu thì chuyển về trang login
                 filterContext.Result = RedirectToAction("Login", "Home");
@@ -104,7 +104,7 @@ namespace UniSchedule.Controllers
                 new SelectListItem { Value = $"{currentYear1}-{currentYear1 + 1}", Text = $"{currentYear1}-{currentYear1 + 1}" }
             };
                 ViewBag.NamHocList = namHocList1;
-
+                ViewBag.MaKhoa = new SelectList(db.Khoas, "MaKhoa", "TenKhoa");
                 ViewBag.MaGV = new SelectList(db.GiangViens, "MaGV", "TenGV", phanCongGiangDay.MaGV);
                 ViewBag.MaLHP = new SelectList(db.LopHocPhans, "MaLHP", "TenMH", phanCongGiangDay.MaLHP);
                 return View(phanCongGiangDay);
@@ -124,7 +124,11 @@ namespace UniSchedule.Controllers
                 ModelState.AddModelError("NamHoc", "Vui lòng chọn năm học hợp lệ.");
             }
 
-
+            bool isExit = db.PhanCongGiangDays.Any(m => m.LopHocPhan.MaLHP == phanCongGiangDay.MaLHP);
+            if (isExit)
+            {
+                ModelState.AddModelError("MaLHP", "Lớp học phần này đã được phân công.");
+            }
 
             if (ModelState.IsValid)
             {
@@ -147,7 +151,7 @@ namespace UniSchedule.Controllers
                 new SelectListItem { Value = $"{currentYear}-{currentYear + 1}", Text = $"{currentYear}-{currentYear + 1}" }
             };
             ViewBag.NamHocList = namHocList;
-
+            ViewBag.MaKhoa = new SelectList(db.Khoas, "MaKhoa", "TenKhoa");
             ViewBag.MaGV = new SelectList(db.GiangViens, "MaGV", "TenGV", phanCongGiangDay.MaGV);
             ViewBag.MaLHP = new SelectList(db.LopHocPhans, "MaLHP", "TenMH", phanCongGiangDay.MaLHP);
             return View(phanCongGiangDay);

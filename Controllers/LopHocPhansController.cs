@@ -72,6 +72,13 @@ namespace UniSchedule.Controllers
                 }
                 return View(lopHocPhan);
             }
+            bool isExit = db.LopHocPhans.Find(lopHocPhan.MaLHP) != null;
+            if (isExit)
+            {
+                ModelState.AddModelError("MaLHP", "Trùng mã Lớp Học Phần");
+                ModelState.AddModelError("", "Trùng thông tin.");
+                return View(lopHocPhan);
+            }
             if (ModelState.IsValid)
             {
                 db.LopHocPhans.Add(lopHocPhan);

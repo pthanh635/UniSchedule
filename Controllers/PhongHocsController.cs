@@ -56,6 +56,17 @@ namespace XepLichGiangVien.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "MaPhong,TenPhong,SoLuongChoNgoi")] PhongHoc phongHoc)
         {
+            if (String.IsNullOrEmpty(phongHoc.MaPhong) || String.IsNullOrEmpty(phongHoc.TenPhong))
+            {
+                if (String.IsNullOrEmpty(phongHoc.MaPhong)){
+                    ModelState.AddModelError("MaPhong", "Mã Phòng trống.");
+                }
+                if (String.IsNullOrEmpty(phongHoc.TenPhong))
+                {
+                    ModelState.AddModelError("TenPhong", "Tên phòng trống.");
+                }
+                return View(phongHoc);
+            }
             if (ModelState.IsValid)
             {
                 db.PhongHocs.Add(phongHoc);

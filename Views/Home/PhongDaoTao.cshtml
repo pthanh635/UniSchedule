@@ -8,7 +8,7 @@
 <div class="container d-flex justify-content-center align-items-center min-vh-100">
     <div class="card shadow-lg p-4" style="width: 100%; max-width: 500px; border-radius: 1rem;">
         <div class="text-center mb-4">
-            <h2 class="fw-bold">Chào mừng Phòng Đào Tạo</h2>
+            <h2 class="fw-bold">Phòng Đào Tạo</h2>
             <p class="text-muted">Vui lòng chọn chức năng</p>
         </div>
 
@@ -24,6 +24,9 @@
             </a>
             <a href="@Url.Action("Index", "PhongHocs")" class="list-group-item list-group-item-action d-flex align-items-center gap-2">
                 <i class="fas fa-door-open text-info"></i> Quản lý Phòng học
+            </a>
+            <a href="@Url.Action("Index", "PhanCongGiangDays")" class="list-group-item list-group-item-action d-flex align-items-center gap-2">
+                <i class="fas fa-chalkboard-teacher fa-lg text-warning"></i> Phân Công Giảng Dạy
             </a>
             <a href="@Url.Action("Index", "LichDays")" class="list-group-item list-group-item-action d-flex align-items-center gap-2">
                 <i class="fas fa-calendar-alt text-danger"></i> Xếp Lịch Dạy
